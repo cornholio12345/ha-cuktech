@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "CUKTECH Charger",
+        "description": "Richte deinen CUKTECH Charger ein. Die Integration empfängt Echtzeitdaten per MQTT vom lokalen CUKTECH-BLE-Server.",
+        "data": {
+          "name": "Gerätename",
+          "server_url": "URL des BLE-Servers"
+        }
+      },
+      "reauth": {
+        "title": "Verbindung aktualisieren",
+        "description": "Die Verbindungsdaten des CUKTECH-BLE-Servers haben sich geändert.",
+        "data": {
+          "server_url": "URL des BLE-Servers"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Verbindung aktualisieren",
+        "description": "Bitte prüfe die URL des CUKTECH-BLE-Servers und gib sie erneut ein.",
+        "data": {
+          "server_url": "URL des BLE-Servers"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zum Server nicht möglich",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "abort": {
+      "already_configured": "Dieses Gerät ist bereits eingerichtet",
+      "reauth_successful": "Verbindung erfolgreich aktualisiert"
+    }
+  }
+}
