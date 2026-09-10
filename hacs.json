@@ -1,0 +1,6 @@
+{
+  "name": "CUKTECH Charger (DE Fork)",
+  "content_in_root": false,
+  "homeassistant": "2024.1.0",
+  "render_readme": false
+}
