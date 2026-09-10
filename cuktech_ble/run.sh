@@ -13,8 +13,8 @@ ble:
   scan_timeout: 15
 
 mqtt:
-  enabled: false
-  host: "core-mosquitto"
+  enabled: true
+  host: ""
   port: 1883
   username: ""
   password: ""
@@ -38,9 +38,12 @@ bemfa:
 EOF
 fi
 
-# Enforce local-safe settings on every start while preserving user BLE/MQTT config.
+# Enforce local-safe settings and inject Supervisor-managed MQTT credentials.
 python3 - <<'PY'
 from pathlib import Path
+import json
+import os
+import urllib.request
 import yaml
 
 p = Path('/data/config.yaml')
@@ -51,6 +54,25 @@ server = cfg.setdefault('server', {})
 server['host'] = '0.0.0.0'
 server['port'] = 8199
 server['history_db_path'] = '/data/port_history.db'
+
+mqtt = cfg.setdefault('mqtt', {})
+try:
+    token = os.environ['SUPERVISOR_TOKEN']
+    req = urllib.request.Request(
+        'http://supervisor/services/mqtt',
+        headers={'Authorization': f'Bearer {token}'},
+    )
+    with urllib.request.urlopen(req, timeout=5) as r:
+        payload = json.load(r)
+    svc = payload.get('data', payload)
+    mqtt['enabled'] = True
+    mqtt['host'] = svc['host']
+    mqtt['port'] = int(svc['port'])
+    mqtt['username'] = svc.get('username', '')
+    mqtt['password'] = svc.get('password', '')
+    print(f"[ha-cuktech] MQTT service injected: {mqtt['host']}:{mqtt['port']}")
+except Exception as e:
+    print(f"[ha-cuktech] MQTT service lookup failed: {e}")
 
 p.write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True))
 PY
