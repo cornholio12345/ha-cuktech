@@ -1,5 +1,5 @@
 name: "CUKTECH BLE Server"
-version: "0.2.0"
+version: "0.3.0"
 slug: "cuktech_ble"
 description: "Local CUKTECH 10 Ultra BLE bridge for Home Assistant"
 arch:
@@ -8,6 +8,8 @@ startup: application
 boot: auto
 init: false
 host_dbus: true
+services:
+  - mqtt:need
 ports:
   "8199/tcp": 8199
 ports_description:
