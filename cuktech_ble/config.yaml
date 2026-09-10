@@ -1,14 +1,15 @@
 name: "CUKTECH BLE Server"
-version: "0.1.0"
+version: "0.2.0"
 slug: "cuktech_ble"
-description: "CUKTECH 10 Ultra BLE server for Home Assistant"
+description: "Local CUKTECH 10 Ultra BLE bridge for Home Assistant"
 arch:
   - amd64
 startup: application
 boot: auto
 init: false
-host_network: true
 host_dbus: true
-full_access: true
-apparmor: false
-webui: "http://[HOST]:8199/config.html"
+ports:
+  "8199/tcp": 8199
+ports_description:
+  "8199/tcp": "CUKTECH local web UI"
+webui: "http://[HOST]:[PORT:8199]/config.html"
